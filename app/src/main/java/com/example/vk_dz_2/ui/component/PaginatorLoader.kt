@@ -10,11 +10,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun PaginationLoader(
-    modifier: Modifier = Modifier
-) {
+fun PaginationLoader() {
     Box(
-        modifier = modifier
+        modifier = Modifier
             .fillMaxWidth()
             .padding(16.dp),
         contentAlignment = Alignment.Center

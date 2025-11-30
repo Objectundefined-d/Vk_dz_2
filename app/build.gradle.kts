@@ -2,7 +2,8 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.hilt.android)
-    alias(libs.plugins.kotlin.compose) // Добавляем Compose Compiler plugin
+    alias(libs.plugins.kotlin.compose)
+    alias(libs.plugins.kotlin.serialization) // Добавляем Compose Compiler plugin
     id("kotlin-kapt")
     id("kotlin-parcelize")
 }
@@ -110,6 +111,7 @@ dependencies {
     debugImplementation(libs.androidx.compose.ui.test.manifest)
 
     implementation("com.google.android.material:material:1.11.0")
+    implementation(libs.kotlinx.serialization.json)
 }
 
 kapt {

@@ -10,6 +10,6 @@ class GetImagesUseCase @Inject constructor(
     private val repository: ImageRepository
 ) {
     operator fun invoke(): Flow<PagingData<Image>> {
-        return repository.getImages()
+        return repository.getImagesPagingData()
     }
 }

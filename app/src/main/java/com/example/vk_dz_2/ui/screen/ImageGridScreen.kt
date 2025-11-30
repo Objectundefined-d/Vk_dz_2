@@ -1,13 +1,12 @@
 package com.example.vk_dz_2.ui.screen
 
-import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
-import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
-import androidx.compose.foundation.lazy.staggeredgrid.rememberLazyStaggeredGridState
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
@@ -18,6 +17,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.itemKey
@@ -30,10 +30,9 @@ import com.example.vk_dz_2.ui.component.PaginationLoader
 import com.example.vk_dz_2.ui.viewmodel.ImageViewModel
 import kotlinx.coroutines.launch
 
-@SuppressLint("StateFlowValueCalledInComposition")
 @Composable
 fun ImageGridScreen(
-    viewModel: ImageViewModel
+    viewModel: ImageViewModel = hiltViewModel()
 ) {
     val context = LocalContext.current
     val images = viewModel.images.collectAsLazyPagingItems()
@@ -90,13 +89,14 @@ fun ImageGrid(
     onImageClick: (Int) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val gridState = rememberLazyStaggeredGridState()
+    val gridState = rememberLazyGridState()
 
-    LazyVerticalStaggeredGrid(
-        columns = StaggeredGridCells.Adaptive(150.dp),
+    LazyVerticalGrid(
+        columns = GridCells.Adaptive(150.dp),
         state = gridState,
         modifier = modifier,
-        verticalItemSpacing = 8.dp,
+        verticalArrangement = androidx.compose.foundation.layout.Arrangement.spacedBy(8.dp),
+        horizontalArrangement = androidx.compose.foundation.layout.Arrangement.spacedBy(8.dp),
         contentPadding = androidx.compose.foundation.layout.PaddingValues(8.dp)
     ) {
         items(
@@ -114,14 +114,10 @@ fun ImageGrid(
             }
         }
 
+        // Show loading indicator at the bottom when loading more
         if (images.loadState.append is androidx.paging.LoadState.Loading) {
             item {
                 PaginationLoader()
-            }
-        }
-
-        if (images.loadState.append is androidx.paging.LoadState.Error) {
-            item {
             }
         }
     }
