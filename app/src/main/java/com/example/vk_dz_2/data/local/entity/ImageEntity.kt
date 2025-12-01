@@ -9,20 +9,36 @@ data class ImageEntity(
     @PrimaryKey
     val id: String,
     val url: String,
-    val title: String,
-    val thumbnailUrl: String
-)
+    val width: Int,
+    val height: Int,
+    val author: String = "Cat",
+    val cachedAt: Long = System.currentTimeMillis()
+) {
+    fun toImage(): Image {
+        return Image(
+            id = id,
+            url = url,
+            width = width,
+            height = height,
+            author = author
+        )
+    }
+}
 
-fun ImageEntity.toImage() = Image(
-    id = id,
-    url = url,
-    title = title,
-    thumbnailUrl = thumbnailUrl
-)
+fun Image.toEntity(): ImageEntity {
+    return ImageEntity(
+        id = id,
+        url = url,
+        width = width,
+        height = height,
+        author = author
+    )
+}
 
-fun Image.toImageEntity() = ImageEntity(
-    id = id,
-    url = url,
-    title = title,
-    thumbnailUrl = thumbnailUrl
-)
+fun List<Image>.toEntityList(): List<ImageEntity> {
+    return map { it.toEntity() }
+}
+
+fun List<ImageEntity>.toImageList(): List<Image> {
+    return map { it.toImage() }
+}

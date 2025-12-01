@@ -5,7 +5,7 @@ import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.example.vk_dz_2.data.paging.ImagePagingSource
-import com.example.vk_dz_2.data.remote.ApiService
+import com.example.vk_dz_2.data.remote.api.ImageApi
 import com.example.vk_dz_2.domain.model.Image
 import com.example.vk_dz_2.domain.repository.ImageRepository
 import kotlinx.coroutines.CoroutineScope
@@ -14,7 +14,7 @@ import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 class ImageRepositoryImpl @Inject constructor(
-    private val apiService: ApiService
+    private val apiService: ImageApi
 ) : ImageRepository {
 
     private val pagingScope = CoroutineScope(Dispatchers.IO)
@@ -25,7 +25,7 @@ class ImageRepositoryImpl @Inject constructor(
                 pageSize = 20,
                 enablePlaceholders = false
             ),
-            pagingSourceFactory = { ImagePagingSource(apiService) }
+            pagingSourceFactory = { ImagePagingSource() }
         ).flow.cachedIn(pagingScope)
     }
 

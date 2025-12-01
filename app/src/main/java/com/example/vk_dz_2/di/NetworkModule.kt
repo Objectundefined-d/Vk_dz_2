@@ -1,6 +1,6 @@
 package com.example.vk_dz_2.di
 
-import com.example.vk_dz_2.data.remote.ApiService
+import com.example.vk_dz_2.data.remote.api.ImageApi
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import dagger.Module
@@ -24,6 +24,13 @@ object NetworkModule {
             .addInterceptor(HttpLoggingInterceptor().apply {
                 level = HttpLoggingInterceptor.Level.BODY
             })
+            .addInterceptor { chain ->
+                val request = chain.request().newBuilder()
+                    .addHeader("x-api-key", "live_7KGzHSFfCPUUxWNUDMFGxWWF3jYSdFmB8WpZTlBWJEyNc2If9QgFZTLddIduAsIW")
+                    .addHeader("User-Agent", "ImageGalleryApp/1.0")
+                    .build()
+                chain.proceed(request)
+            }
             .build()
     }
 
@@ -39,7 +46,7 @@ object NetworkModule {
     @Singleton
     fun provideRetrofit(okHttpClient: OkHttpClient, moshi: Moshi): Retrofit {
         return Retrofit.Builder()
-            .baseUrl("https://dog.ceo/")
+            .baseUrl("https://api.thecatapi.com/v1/")
             .client(okHttpClient)
             .addConverterFactory(MoshiConverterFactory.create(moshi))
             .build()
@@ -47,7 +54,7 @@ object NetworkModule {
 
     @Provides
     @Singleton
-    fun provideApiService(retrofit: Retrofit): ApiService {
-        return retrofit.create(ApiService::class.java)
+    fun provideApiService(retrofit: Retrofit): ImageApi {
+        return retrofit.create(ImageApi::class.java)
     }
 }
